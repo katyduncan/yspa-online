@@ -35,3 +35,24 @@
 //     else console.log('Result', files);
 // });
 
+const EventEmitter = require('events');
+const emitter = new EventEmitter();
+
+// Register a listener
+// emitter.on('messageLogged', function(e) {
+//     console.log('Listener called', e);
+// });
+// ARROW FUNCTION
+emitter.on('messageLogged', (e) => {
+    console.log('Listener called', e);
+});
+
+//Raise an event
+emitter.emit('messageLogged', { id: 1, url: 'http://' });
+
+// Raise: logging (data: message)
+emitter.on('logging', (e) => {
+    console.log('Data being passed: ', e.data)
+});
+//Raise logging even w/data
+emitter.emit('logging', { id: 1, data: 'here\'s the data', url: 'http://' });
