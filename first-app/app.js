@@ -36,23 +36,65 @@
 // });
 
 const EventEmitter = require('events');
-const emitter = new EventEmitter();
+// const emitter = new EventEmitter();
 
 // Register a listener
 // emitter.on('messageLogged', function(e) {
 //     console.log('Listener called', e);
 // });
 // ARROW FUNCTION
-emitter.on('messageLogged', (e) => {
+// emitter.on('messageLogged', (e) => {
+//     console.log('Listener called', e);
+// });
+
+// //Raise an event
+// emitter.emit('messageLogged', { id: 1, url: 'http://' });
+
+// // Raise: logging (data: message)
+// emitter.on('logging', (e) => {
+//     console.log('Data being passed: ', e.data)
+// });
+// //Raise logging even w/data
+// emitter.emit('logging', { id: 1, data: 'here\'s the data', url: 'http://' });
+
+// // Register a listener
+// emitter.on('messageLogged', (e) => {
+//     console.log('Listener called', e);
+// }); 
+
+// const log = require('./logger');
+// log('message');
+
+const Logger = require('./logger');
+const logger = new Logger();
+
+// Register a listener
+logger.on('messageLogged', (e) => {
     console.log('Listener called', e);
+}); 
+
+logger.log('message');
+
+// START HTTP trials
+
+const http = require('http');
+
+// const server = http.createServer();
+// server.on('connection', (socket)=> {
+//     console.log('New connection...');
+// });
+const server = http.createServer((req, res) => {
+    if (req.url === '/') {
+        res.write('Hello World');
+        res.end();
+    }
+
+    if (req.url === '/api/courses') {
+        res.write(JSON.stringify([1,2,3]));
+        res.end();
+    }
 });
 
-//Raise an event
-emitter.emit('messageLogged', { id: 1, url: 'http://' });
+server.listen(3000);
 
-// Raise: logging (data: message)
-emitter.on('logging', (e) => {
-    console.log('Data being passed: ', e.data)
-});
-//Raise logging even w/data
-emitter.emit('logging', { id: 1, data: 'here\'s the data', url: 'http://' });
+console.log('Listening on port 3000...');
